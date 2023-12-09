@@ -1,0 +1,105 @@
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+from datetime import datetime
+
+# Define the internships with their details
+internship_info = [
+    {
+        "company": "CeX Webuy",
+        "start": "2021-07-01",
+        "end": "2022-01-31",
+        "description": "SQL, software dev, DASH app, Jira, GitHub, QA.",
+        "color": "skyblue"
+    },
+    {
+        "company": "Oriental FabriTech Pvt. Ltd.",
+        "start": "2022-07-01",
+        "end": "2023-11-30",
+        "description": "Website design, security testing, enhanced sales.",
+        "color": "orange"
+    },
+    {
+        "company": "Techmentry",
+        "start": "2023-06-01",
+        "end": "2023-08-31",
+        "description": "Robotics projects, drone development course, ROS, OpenCV.",
+        "color": "green"
+    },
+    {
+        "company": "1phi618",
+        "start": "2023-09-01",
+        "end": "2023-11-30",
+        "description": "Python, Jupyter, NLP chatbots, SQL, AWS, HR automation.",
+        "color": "red"
+    },
+    {
+        "company": "DJS Antariksh",
+        "start": "2021-10-01",
+        "end": "2022-10-31",
+        "description": "ROS, AI algorithms, rover navigation, documentation.",
+        "color": "purple"
+    },
+    {
+        "company": "DJS Antariksh (Head)",
+        "start": "2022-10-01",
+        "end": "2023-11-30",
+        "description": "Training in ROS, MoveIt, autonomous navigation, Docker, GUI development.",
+        "color": "brown"
+    },
+    {
+        "company": "DJS Racing",
+        "start": "2021-03-01",
+        "end": "2023-02-28",
+        "description": "ROS, vehicle harnessing, EV management, BMS, LiDAR.",
+        "color": "pink"
+    }
+]
+
+# Create the timeline graph
+plt.figure(figsize=(16, 9), facecolor='black')
+ax = plt.gca()
+ax.set_facecolor('black')
+
+# Define the date format for the x-axis
+ax.xaxis.set_major_locator(mdates.YearLocator())
+ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y'))
+ax.xaxis.set_minor_locator(mdates.MonthLocator())
+ax.grid(True, which='major', axis='x', linestyle='--', color='grey')
+
+# Plot each internship
+for i, internship in enumerate(internship_info):
+    start = mdates.date2num(datetime.strptime(internship["start"], "%Y-%m-%d"))
+    end = mdates.date2num(datetime.strptime(internship["end"], "%Y-%m-%d"))
+    ax.barh(i, end - start, left=start, height=0.4, color=internship["color"], edgecolor='white')
+    mid_point = start + (end - start) / 2
+    if internship["description"]:  # Check if the description is not empty
+        ax.text(mid_point, i, internship['description'], ha='center', va='center', color='white')
+
+ax.tick_params(axis='x', colors='white')
+ax.tick_params(axis='y', colors='white')
+
+# Set the y-axis with company names and white text
+ax.set_yticks(range(len(internship_info)))
+ax.set_yticklabels([internship["company"] for internship in internship_info], fontsize=12, color='white')
+
+# Format the x-axis to show dates with white text
+ax.xaxis_date()
+date_format = mdates.DateFormatter('%b %Y')
+ax.xaxis.set_major_formatter(date_format)
+ax.xaxis.label.set_color('white')
+ax.yaxis.label.set_color('white')
+
+# Remove spines and ticks for a cleaner look
+ax.tick_params(axis='y', which='both', left=False, color='white')
+for spine in plt.gca().spines.values():
+    spine.set_visible(False)
+
+# Adjust layout to fit and save the plot as a PNG image
+plt.tight_layout()
+image_save_path = 'internship_timeline_final.png'
+plt.savefig(image_save_path, facecolor='black', bbox_inches='tight')
+
+# Display the plot if needed (not required if just saving the file)
+# plt.show()
+
+image_save_path  # The file path where the image is saved
